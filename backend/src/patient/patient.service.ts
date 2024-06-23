@@ -11,6 +11,17 @@ export class PatientService implements AbstractPatientService {
   constructor(private patientRepository: PatientRepository) {}
 
   /**
+   * Formats the given ID to a number.
+   *
+   * @param {number} id - The ID to be formatted.
+   * @returns {number} The formatted ID as a number.
+   */
+  formatId(id: number): number {
+    const format = Number(id);
+    return format;
+  }
+
+  /**
    * Creates a new patient.
    *
    * @param {CreatePatientDto} createPatientDto - Data Transfer Object containing the details of the patient to be created.
@@ -27,8 +38,7 @@ export class PatientService implements AbstractPatientService {
       );
     }
 
-    const patientCreated =
-      await this.patientRepository.create(createPatientDto);
+    const patientCreated = await this.patientRepository.create(createPatientDto);
     return patientCreated;
   }
 
@@ -54,7 +64,8 @@ export class PatientService implements AbstractPatientService {
    * @throws {BadRequestException} Throws an exception if the patient is not found.
    */
   async getById(id: number): Promise<ListPatientDto> {
-    const patient = await this.patientRepository.getById(id);
+    const idPatient = this.formatId(id);
+    const patient = await this.patientRepository.getById(idPatient);
     if (!patient) {
       throw new BadRequestException(ValidationMessageEnum.NOT_FOUND);
     }
@@ -72,8 +83,9 @@ export class PatientService implements AbstractPatientService {
     id: number,
     updatePatientDto: UpdatePatientDto,
   ): Promise<ListPatientDto> {
+    const idPatient = this.formatId(id);
     const patientUpdated = await this.patientRepository.update(
-      id,
+      idPatient,
       updatePatientDto,
     );
     return patientUpdated;
@@ -84,8 +96,14 @@ export class PatientService implements AbstractPatientService {
    *
    * @param {number} id - The ID of the patient to delete.
    * @returns {Promise<void>} A promise that resolves when the patient is deleted.
+   * @throws {BadRequestException} Throws an exception if the patient is not found.
    */
   async delete(id: number): Promise<void> {
-    await this.patientRepository.delete(id);
+    const idPatient = this.formatId(id);
+    const patient = await this.patientRepository.getById(idPatient);
+    if (!patient) {
+      throw new BadRequestException(ValidationMessageEnum.NOT_FOUND_PATIENT);
+    }
+    await this.patientRepository.delete(idPatient);
   }
 }
