@@ -47,12 +47,16 @@ export abstract class AbstractConsultationRepository {
   abstract getById(id: number): Promise<ListConsultationDto>;
 
   /**
-   * Get a Consultation by its email.
+   * Get a Consultation by its date and hour.
    *
-   * @param {string} email - The email of the Consultation to retrieve.
+   * @param {string} date - The date of the Consultation to retrieve.
+   * @param {string} hour - The hour of the Consultation to retrieve.
    * @returns {Promise<ListConsultationDto>} A promise that resolves to the retrieved Consultation.
    */
-  abstract getByEmail(email: string): Promise<ListConsultationDto>;
+  abstract getByDate(
+    date: string,
+    hour: string,
+  ): Promise<ListConsultationDto[]>;
 
   /**
    * Get all Consultations.

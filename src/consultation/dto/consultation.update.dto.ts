@@ -3,74 +3,86 @@
  */
 export class UpdateConsultationDto {
   // Private properties representing the consultation attributes
-  private _id: number;
-  private _name: string;
-  private _telephone: string;
+
+  /**
+   * The date of the consultation.
+   */
+  private _date?: string;
+
+  /**
+   * The hour of the consultation.
+   */
+  private _hour?: string;
+
+  /**
+   * The ID of the patient.
+   */
+  private _patientId?: number;
 
   /**
    * Constructs an instance of UpdateConsultationDto.
    *
-   * @param {number} id - The document identifier for the consultation.
-   * @param {string} telephone - The telephone number of the consultation.
-   * @param {string} name - The name of the consultation.
+   * @param {string} date - The date of the consultation.
+   * @param {string} hour - The hour of the consultation.
+   * @param {number} patientId - The ID of the patient.
    */
-  constructor(id: number, telephone: string, name: string) {
-    this._id = id;
-    this._telephone = telephone;
-    this._name = name;
+  constructor(date: string, hour: string, patientId: number) {
+    this._date = date;
+    this._hour = hour;
+    this._patientId = patientId;
   }
 
   /**
-   * Gets the document identifier for the consultation.
+   * Gets the date of the consultation.
    *
-   * @returns {number} - The document identifier.
+   * @returns {string} - The date of the consultation.
    */
-  public get id(): number {
-    return this._id;
+  public get date(): string {
+    return this._date;
   }
 
   /**
-   * Sets the document identifier for the consultation.
+   * Sets the date of the consultation.
    *
-   * @param {number} id - The document identifier.
+   * @param {string} date - The date of the consultation.
    */
-  public set id(id: number) {
-    this._id = id;
+  public set date(date: string) {
+    this._date = date;
   }
 
   /**
-   * Gets the telephone number of the consultation.
+   * Gets the hour of the consultation.
    *
-   * @returns {string} - The telephone number.
+   * @returns {string} - The hour of the consultation.
    */
-  public get telephone(): string {
-    return this._telephone;
+  public get hour(): string {
+    return this._hour;
   }
 
   /**
-   * Sets the telephone number of the consultation.
+   * Sets the hour of the consultation.
    *
-   * @param {string} telephone - The telephone number.
+   * @param {string} hour - The hour of the consultation.
    */
-  public set telephone(telephone: string) {
-    this._telephone = telephone;
+  public set hour(hour: string) {
+    this._hour = hour;
   }
 
   /**
-   * Gets the name of the consultation.
+   * Gets the ID of the patient.
    *
-   * @returns {string} - The name of the consultation.
+   * @returns {number} - The ID of the patient.
    */
-  public get name(): string {
-    return this._name;
+  public get patientId(): number {
+    return this._patientId;
   }
 
   /**
-   * Sets the name of the consultation.
+   * Sets the ID of the patient.
    *
-   * @param {string} name - The name of the consultation.
+   * @param {number} patientId - The ID of the patient.
    */
-  public set name(name: string) {
-    this._name = name;
+  public set patientId(patientId: number) {
+    this._patientId = patientId;
   }
 }

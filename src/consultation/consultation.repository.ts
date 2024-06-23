@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
+import { PrismaService } from '../infra/prisma.service';
 import { AbstractConsultationRepository } from './interfaces/consultation.repository.abstract';
 import { CreateConsultationDto } from './dto/consultation.create.dto';
 import { ListConsultationDto } from './dto/consultation.list.dto';
 import { UpdateConsultationDto } from './dto/consultation.update.dto';
-import { PrismaService } from '../infra/prisma.service';
 
 @Injectable()
 export class ConsultationRepository implements AbstractConsultationRepository {
@@ -13,39 +13,50 @@ export class ConsultationRepository implements AbstractConsultationRepository {
    * Creates a new consultation in the database.
    *
    * @param {CreateConsultationDto} createDto - The DTO containing data to create a new consultation.
-   * @returns {Promise<ListConsultationDto | null>} A promise that resolves to the created consultation DTO.
+   * @returns {Promise<ListConsultationDto | null>} A promise that resolves to the created consultation DTO or null if creation fails.
    */
   async create(
     createDto: CreateConsultationDto,
   ): Promise<ListConsultationDto | null> {
     const consultation = await this.prisma.consultation.create({
       data: {
-        name: createDto.name,
-        telephone: createDto.telephone,
+        patientId: createDto.patientId,
+        date: createDto.date,
+        hour: createDto.hour,
       },
     });
     return this.mapPrismaConsultationToDto(consultation);
   }
 
   /**
-   * Retrieves an consultation by email.
+   * Retrieves consultations by date and hour.
    *
-   * @param {string} email - The email of the consultation.
+   * @param {string} date - The date of the consultation.
+   * @param {string} hour - The hour of the consultation.
    * @returns {Promise<ListConsultationDto | null>} A promise that resolves to the consultation DTO or null if not found.
    */
-  async getByEmail(email: string): Promise<ListConsultationDto | null> {
-    const consultation = await this.prisma.consultation.findFirst({
+  async getByDate(
+    date: string,
+    hour: string,
+  ): Promise<ListConsultationDto[] | null> {
+    const consultations = await this.prisma.consultation.findMany({
       where: {
-        email: email,
+        date: date,
+        hour: hour,
       },
     });
-    return this.mapPrismaConsultationToDto(consultation);
+    if (consultations.length === 0) {
+      return null;
+    }
+    return consultations.map((consultation) =>
+      this.mapPrismaConsultationToDto(consultation),
+    );
   }
 
   /**
-   * Retrieves an consultation by ID.
+   * Retrieves a consultation by ID.
    *
-   * @param {string} id - The ID of the consultation.
+   * @param {number} id - The ID of the consultation.
    * @returns {Promise<ListConsultationDto | null>} A promise that resolves to the consultation DTO or null if not found.
    */
   async getById(id: number): Promise<ListConsultationDto | null> {
@@ -72,7 +83,7 @@ export class ConsultationRepository implements AbstractConsultationRepository {
   /**
    * Updates an existing consultation.
    *
-   * @param {string} id - The ID of the consultation to update.
+   * @param {number} id - The ID of the consultation to update.
    * @param {UpdateConsultationDto} updateDto - The DTO containing updated data.
    * @returns {Promise<ListConsultationDto | null>} A promise that resolves to the updated consultation DTO or null if not found.
    */
@@ -80,28 +91,29 @@ export class ConsultationRepository implements AbstractConsultationRepository {
     id: number,
     updateDto: UpdateConsultationDto,
   ): Promise<ListConsultationDto | null> {
-    const updatedconsultation = await this.prisma.consultation.update({
+    const updatedConsultation = await this.prisma.consultation.update({
       where: {
         id: id,
       },
       data: {
-        name: updateDto.name,
-        telephone: updateDto.telephone,
+        patientId: updateDto.patientId,
+        date: updateDto.date,
+        hour: updateDto.hour,
       },
     });
-    return this.mapPrismaConsultationToDto(updatedconsultation);
+    return this.mapPrismaConsultationToDto(updatedConsultation);
   }
 
   /**
-   * Deletes an consultation by ID.
+   * Deletes a consultation by ID.
    *
-   * @param {string} idconsultation - The ID of the consultation to delete.
+   * @param {number} idConsultation - The ID of the consultation to delete.
    * @returns {Promise<void>} A promise that resolves when the consultation is deleted.
    */
-  async delete(idconsultation: number): Promise<void> {
+  async delete(idConsultation: number): Promise<void> {
     await this.prisma.consultation.delete({
       where: {
-        id: idconsultation,
+        id: idConsultation,
       },
     });
   }
@@ -109,19 +121,20 @@ export class ConsultationRepository implements AbstractConsultationRepository {
   /**
    * Maps the Prisma consultation entity to a ListConsultationDto.
    *
-   * @param {any} prismaconsultation - The consultation object returned from Prisma.
+   * @param {any} prismaConsultation - The consultation object returned from Prisma.
    * @returns {ListConsultationDto | null} The mapped DTO or null if input is null.
    */
   mapPrismaConsultationToDto(
-    prismaconsultation: any,
+    prismaConsultation: any,
   ): ListConsultationDto | null {
-    if (!prismaconsultation) {
+    if (!prismaConsultation) {
       return null;
     }
     return new ListConsultationDto(
-      prismaconsultation.id,
-      prismaconsultation.telephone,
-      prismaconsultation.name,
+      prismaConsultation.id,
+      prismaConsultation.date,
+      prismaConsultation.hour,
+      prismaConsultation.patientId,
     );
   }
 }
