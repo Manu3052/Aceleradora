@@ -1,11 +1,20 @@
 import { Module } from '@nestjs/common';
-import { PatientService } from './patient.service';
 import { PatientController } from 'src/patient/patient.controller';
-import { PatientRepository } from './patient.repository';
 import { PrismaService } from 'src/infra/prisma.service';
+import { ConfigModule } from '@nestjs/config';
+import { PatientService } from './patient.service';
+import { PatientRepository } from './patient.repository';
 
 @Module({
-  providers: [PatientService, PatientRepository, PrismaService],
+  imports: [ConfigModule],
   controllers: [PatientController],
+  providers: [
+    PatientService,
+    PrismaService,
+    {
+      provide: PatientRepository,
+      useClass: PatientRepository,
+    },
+  ],
 })
 export class PatientModule {}
