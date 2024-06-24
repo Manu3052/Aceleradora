@@ -1,5 +1,5 @@
 export enum ValidationMessageEnum {
-  EMPTY_INPUT = 'É necessário preecher esse campo.',
+  EMPTY_INPUT = 'É necessário preecher todos os campos.',
   ALREADY_EXISTS_TELEPHONE = 'Paciente já cadastrado!',
   SIGN_IN_SUCESS = 'Paciente cadastrado com sucesso',
   ALREADY_CHOSEN_DATA = 'Já existe um agendamento nesse horário. Por favor, escolha outra data ou horário.',

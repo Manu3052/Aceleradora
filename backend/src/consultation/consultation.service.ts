@@ -20,6 +20,14 @@ export class ConsultationService implements AbstractConsultationService {
   async create(
     createConsultationDto: CreateConsultationDto,
   ): Promise<ListConsultationDto> {
+    if (
+      !createConsultationDto.date ||
+      !createConsultationDto.hour ||
+      !createConsultationDto.specialty ||
+      !createConsultationDto.patientId
+    ) {
+      throw new BadRequestException(ValidationMessageEnum.EMPTY_INPUT);
+    }
     const existingConsultation = await this.consultationRepository.getByDate(
       createConsultationDto.date,
       createConsultationDto.hour,

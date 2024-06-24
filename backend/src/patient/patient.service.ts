@@ -29,6 +29,9 @@ export class PatientService implements AbstractPatientService {
    * @throws {BadRequestException} If a patient with the same telephone number already exists.
    */
   async create(createPatientDto: CreatePatientDto): Promise<ListPatientDto> {
+    if (!createPatientDto.name || !createPatientDto.telephone) {
+      throw new BadRequestException(ValidationMessageEnum.EMPTY_INPUT);
+    }
     const existingPatient = await this.patientRepository.getByTelephone(
       createPatientDto.telephone,
     );
