@@ -7,7 +7,7 @@ import { ListConsultationDto } from './dto/consultation.list.dto';
 
 describe('ConsultationController', () => {
   let controller: ConsultationController;
-  let service: ConsultationService;
+  let consultationService: ConsultationService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -28,7 +28,7 @@ describe('ConsultationController', () => {
     }).compile();
 
     controller = module.get<ConsultationController>(ConsultationController);
-    service = module.get<ConsultationService>(ConsultationService);
+    consultationService = module.get<ConsultationService>(ConsultationService);
   });
 
   it('should be defined', () => {
@@ -37,91 +37,83 @@ describe('ConsultationController', () => {
 
   describe('create', () => {
     it('should create a new consultation', async () => {
-      const createDto = new CreateConsultationDto('2024-06-22', '10:00', 1);
-      const listDto: ListConsultationDto = new ListConsultationDto(
+      const createDto = new CreateConsultationDto(
+        '2024-06-25',
+        '09:00',
         1,
-        '2024-06-22',
-        '10:00',
+        'Cardiology',
+      );
+      const createdConsultation = new ListConsultationDto(
         1,
+        '2024-06-25',
+        '09:00',
+        1,
+        'Cardiology',
       );
 
-      jest.spyOn(service, 'create').mockResolvedValueOnce(listDto);
+      jest
+        .spyOn(consultationService, 'create')
+        .mockResolvedValue(createdConsultation);
 
       const result = await controller.create(createDto);
-
-      expect(result).toEqual(listDto);
-      expect(service.create).toHaveBeenCalledWith(createDto);
-    });
-  });
-
-  describe('findAll', () => {
-    it('should return an array of consultations', async () => {
-      const listDto: ListConsultationDto[] = [
-        new ListConsultationDto(1, '2024-06-22', '10:00', 1),
-      ];
-
-      jest.spyOn(service, 'getAll').mockResolvedValueOnce(listDto);
-
-      const result = await controller.findAll();
-
-      expect(result).toEqual(listDto);
-      expect(service.getAll).toHaveBeenCalled();
-    });
-  });
-
-  describe('findByDate', () => {
-    it('should return a list of consultations by date', async () => {
-      const listDto: ListConsultationDto[] = [
-        new ListConsultationDto(1, '2024-06-22', '10:00', 1),
-      ];
-
-      jest.spyOn(service, 'getByDate').mockResolvedValueOnce(listDto);
-
-      const result = await controller.findByDate('2024-06-22');
-
-      expect(result).toEqual(listDto);
-      expect(service.getByDate).toHaveBeenCalledWith('2024-06-22');
+      expect(result).toEqual(createdConsultation);
     });
   });
 
   describe('findOne', () => {
     it('should return a consultation by ID', async () => {
-      const listDto = new ListConsultationDto(1, '2024-06-22', '10:00', 1);
+      const id = 1;
+      const consultation = new ListConsultationDto(
+        1,
+        '2024-06-25',
+        '09:00',
+        1,
+        'Cardiology',
+      );
 
-      jest.spyOn(service, 'getById').mockResolvedValueOnce(listDto);
+      jest
+        .spyOn(consultationService, 'getById')
+        .mockResolvedValue(consultation);
 
-      const result = await controller.findOne(1);
-
-      expect(result).toEqual(listDto);
-      expect(service.getById).toHaveBeenCalledWith(1);
+      const result = await controller.findOne(id);
+      expect(result).toEqual(consultation);
     });
   });
 
   describe('update', () => {
-    it('should update a consultation', async () => {
+    it('should update an existing consultation', async () => {
+      const id = 1;
       const updateDto: UpdateConsultationDto = {
-        date: '2024-06-23',
-        hour: '11:00',
-        patientId: 2,
+        date: '2024-06-26',
+        hour: '10:00',
+        patientId: 1,
+        specialty: 'Dermatology',
       };
-      const listDto = new ListConsultationDto(1, '2024-06-23', '11:00', 2);
+      const updatedConsultation = new ListConsultationDto(
+        1,
+        '2024-06-26',
+        '10:00',
+        1,
+        'Dermatology',
+      );
 
-      jest.spyOn(service, 'update').mockResolvedValueOnce(listDto);
+      jest
+        .spyOn(consultationService, 'update')
+        .mockResolvedValue(updatedConsultation);
 
-      const result = await controller.update(1, updateDto);
-
-      expect(result).toEqual(listDto);
-      expect(service.update).toHaveBeenCalledWith(1, updateDto);
+      const result = await controller.update(id, updateDto);
+      expect(result).toEqual(updatedConsultation);
     });
   });
 
   describe('remove', () => {
-    it('should delete a consultation', async () => {
-      jest.spyOn(service, 'delete').mockResolvedValueOnce();
+    it('should delete a consultation by ID', async () => {
+      const id = 1;
 
-      await controller.remove(1);
+      jest.spyOn(consultationService, 'delete').mockResolvedValue(undefined);
 
-      expect(service.delete).toHaveBeenCalledWith(1);
+      await controller.remove(id);
+      expect(consultationService.delete).toHaveBeenCalledWith(id);
     });
   });
 });

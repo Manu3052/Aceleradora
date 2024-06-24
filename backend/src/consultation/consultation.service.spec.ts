@@ -39,12 +39,18 @@ describe('ConsultationService', () => {
 
   describe('create', () => {
     it('should create a new consultation', async () => {
-      const createDto = new CreateConsultationDto('2024-06-22', '10:00', 1);
+      const createDto = new CreateConsultationDto(
+        '2024-06-22',
+        '10:00',
+        1,
+        'Odontologia',
+      );
       const listDto: ListConsultationDto = new ListConsultationDto(
         1,
         '2024-06-22',
         '10:00',
         1,
+        'Odontologia',
       );
 
       jest.spyOn(repository, 'getByDate').mockResolvedValueOnce(null);
@@ -64,7 +70,7 @@ describe('ConsultationService', () => {
   describe('getAll', () => {
     it('should return an array of consultations', async () => {
       const listDto: ListConsultationDto[] = [
-        new ListConsultationDto(1, '2024-06-22', '10:00', 1),
+        new ListConsultationDto(1, '2024-06-22', '10:00', 1, 'Odontologia'),
       ];
 
       jest.spyOn(repository, 'getAll').mockResolvedValueOnce(listDto);
@@ -87,7 +93,7 @@ describe('ConsultationService', () => {
   describe('getByDate', () => {
     it('should return a consultation by date', async () => {
       const listDto: ListConsultationDto[] = [
-        new ListConsultationDto(1, '2024-06-22', '10:00', 1),
+        new ListConsultationDto(1, '2024-06-22', '10:00', 1, 'Odontologia'),
       ];
 
       jest.spyOn(repository, 'getByDate').mockResolvedValueOnce(listDto);
@@ -109,7 +115,13 @@ describe('ConsultationService', () => {
 
   describe('getById', () => {
     it('should return a consultation by ID', async () => {
-      const listDto = new ListConsultationDto(1, '2024-06-22', '10:00', 1);
+      const listDto = new ListConsultationDto(
+        1,
+        '2024-06-22',
+        '10:00',
+        1,
+        'Odontologia',
+      );
 
       jest.spyOn(repository, 'getById').mockResolvedValueOnce(listDto);
 
@@ -130,12 +142,19 @@ describe('ConsultationService', () => {
 
   describe('update', () => {
     it('should update a consultation', async () => {
-      const updateDto: UpdateConsultationDto = {
-        date: '2024-06-23',
-        hour: '11:00',
-        patientId: 2,
-      };
-      const listDto = new ListConsultationDto(1, '2024-06-23', '11:00', 2);
+      const updateDto = new UpdateConsultationDto(
+        '2024-06-23',
+        '11:00',
+        2,
+        'Odontologia',
+      );
+      const listDto = new ListConsultationDto(
+        1,
+        '2024-06-23',
+        '11:00',
+        2,
+        'Odontologia',
+      );
 
       jest.spyOn(repository, 'update').mockResolvedValueOnce(listDto);
 

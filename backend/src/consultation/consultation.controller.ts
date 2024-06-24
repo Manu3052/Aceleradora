@@ -10,6 +10,7 @@ import {
 import { ConsultationService } from './consultation.service';
 import { CreateConsultationDto } from './dto/consultation.create.dto';
 import { UpdateConsultationDto } from './dto/consultation.update.dto';
+import { ListConsultationDto } from './dto/consultation.list.dto'; // Assuming this DTO is used for responses
 
 @Controller('consultation')
 export class ConsultationController {
@@ -22,8 +23,10 @@ export class ConsultationController {
    * @returns {Promise<ListConsultationDto>} The created consultation.
    */
   @Post()
-  create(@Body() createConsultationDto: CreateConsultationDto) {
-    return this.consultationService.create(createConsultationDto);
+  async create(
+    @Body() createConsultationDto: CreateConsultationDto,
+  ): Promise<ListConsultationDto> {
+    return await this.consultationService.create(createConsultationDto);
   }
 
   /**
@@ -32,8 +35,8 @@ export class ConsultationController {
    * @returns {Promise<ListConsultationDto[]>} A list of all consultations.
    */
   @Get()
-  findAll() {
-    return this.consultationService.getAll();
+  async findAll(): Promise<ListConsultationDto[]> {
+    return await this.consultationService.getAll();
   }
 
   /**
@@ -42,9 +45,11 @@ export class ConsultationController {
    * @param {string} date - The date of the consultations to retrieve.
    * @returns {Promise<ListConsultationDto[]>} A list of consultations on the specified date.
    */
-  @Get(':date')
-  findByDate(@Param('date') date: string) {
-    return this.consultationService.getByDate(date);
+  @Get('date/:date')
+  async findByDate(
+    @Param('date') date: string,
+  ): Promise<ListConsultationDto[]> {
+    return await this.consultationService.getByDate(date);
   }
 
   /**
@@ -54,8 +59,8 @@ export class ConsultationController {
    * @returns {Promise<ListConsultationDto>} The consultation with the given ID.
    */
   @Get(':id')
-  findOne(@Param('id') id: number) {
-    return this.consultationService.getById(id);
+  async findOne(@Param('id') id: number): Promise<ListConsultationDto> {
+    return await this.consultationService.getById(id);
   }
 
   /**
@@ -66,11 +71,11 @@ export class ConsultationController {
    * @returns {Promise<ListConsultationDto>} The updated consultation.
    */
   @Patch(':id')
-  update(
+  async update(
     @Param('id') id: number,
     @Body() updateConsultationDto: UpdateConsultationDto,
-  ) {
-    return this.consultationService.update(id, updateConsultationDto);
+  ): Promise<ListConsultationDto> {
+    return await this.consultationService.update(id, updateConsultationDto);
   }
 
   /**
@@ -80,7 +85,7 @@ export class ConsultationController {
    * @returns {Promise<void>} A promise that resolves when the consultation is deleted.
    */
   @Delete(':id')
-  remove(@Param('id') id: number) {
-    return this.consultationService.delete(id);
+  async remove(@Param('id') id: number): Promise<void> {
+    return await this.consultationService.delete(id);
   }
 }
