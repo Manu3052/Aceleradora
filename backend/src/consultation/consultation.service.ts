@@ -24,7 +24,7 @@ export class ConsultationService implements AbstractConsultationService {
       createConsultationDto.date,
       createConsultationDto.hour,
     );
-    if (existingConsultation !== null) {
+    if (existingConsultation != null) {
       throw new BadRequestException(ValidationMessageEnum.ALREADY_CHOSEN_DATA);
     }
 

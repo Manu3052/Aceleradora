@@ -6,7 +6,7 @@ import { UpdatePatientDto } from '../dto/patient.update.dto';
  * Abstract service class for managing patients.
  */
 export abstract class AbstractPatientService {
-  abstract formatId(id: number)
+  abstract formatId(id: number);
   /**
    * Creates a new patient.
    * @param createDtoPatient - Data transfer object containing patient details for creation.

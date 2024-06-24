@@ -6,8 +6,6 @@ import { ApiProperty } from '@nestjs/swagger';
  * Data Transfer Object (DTO) for creating a consultation.
  */
 export class CreateConsultationDto {
-  // Private properties representing the consultation attributes
-
   /**
    * The date of the consultation.
    */
@@ -36,16 +34,32 @@ export class CreateConsultationDto {
   private _patientId: number;
 
   /**
+   * The specialty for the consultation.
+   */
+  @IsNotEmpty({
+    message: ValidationMessageEnum.EMPTY_INPUT,
+  })
+  @ApiProperty()
+  private _specialty: string;
+
+  /**
    * Constructs an instance of CreateConsultationDto.
    *
    * @param {string} date - The date of the consultation.
    * @param {string} hour - The hour of the consultation.
    * @param {number} patientId - The ID of the patient.
+   * @param {string} specialty - The specialty of the consultation.
    */
-  constructor(date: string, hour: string, patientId: number) {
+  constructor(
+    date: string,
+    hour: string,
+    patientId: number,
+    specialty: string,
+  ) {
     this._date = date;
     this._hour = hour;
     this._patientId = patientId;
+    this._specialty = specialty;
   }
 
   /**
@@ -100,5 +114,23 @@ export class CreateConsultationDto {
    */
   public set patientId(patientId: number) {
     this._patientId = patientId;
+  }
+
+  /**
+   * Gets the specialty of the consultation.
+   *
+   * @returns {string} - The specialty of the consultation.
+   */
+  public get specialty(): string {
+    return this._specialty;
+  }
+
+  /**
+   * Sets the specialty of the consultation.
+   *
+   * @param {string} specialty - The specialty of the consultation.
+   */
+  public set specialty(specialty: string) {
+    this._specialty = specialty;
   }
 }

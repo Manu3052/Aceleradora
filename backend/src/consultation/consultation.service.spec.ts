@@ -59,7 +59,6 @@ describe('ConsultationService', () => {
       );
       expect(repository.create).toHaveBeenCalledWith(createDto);
     });
-
   });
 
   describe('getAll', () => {

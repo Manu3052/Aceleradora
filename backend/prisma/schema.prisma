@@ -30,6 +30,6 @@ model Consultation {
   hour String?
   specialty String?
   patient Patients @relation(fields: [patientId], references: [id])
-  patientId Int @unique
+  patientId Int 
   @@map("consultations")
 }

@@ -23,6 +23,7 @@ export class ConsultationRepository implements AbstractConsultationRepository {
         patientId: createDto.patientId,
         date: createDto.date,
         hour: createDto.hour,
+        specialty: createDto.specialty,
       },
     });
     return this.mapPrismaConsultationToDto(consultation);
@@ -99,6 +100,7 @@ export class ConsultationRepository implements AbstractConsultationRepository {
         patientId: updateDto.patientId,
         date: updateDto.date,
         hour: updateDto.hour,
+        specialty: updateDto.specialty,
       },
     });
     return this.mapPrismaConsultationToDto(updatedConsultation);
@@ -135,6 +137,7 @@ export class ConsultationRepository implements AbstractConsultationRepository {
       prismaConsultation.date,
       prismaConsultation.hour,
       prismaConsultation.patientId,
+      prismaConsultation.specialty,
     );
   }
 }
