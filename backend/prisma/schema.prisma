@@ -28,6 +28,7 @@ model Consultation {
   id    Int     @default(autoincrement()) @id
   date  String?
   hour String?
+  specialty String?
   patient Patients @relation(fields: [patientId], references: [id])
   patientId Int @unique
   @@map("consultations")

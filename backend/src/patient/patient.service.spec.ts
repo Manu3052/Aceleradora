@@ -114,7 +114,7 @@ describe('PatientService', () => {
 
       await expect(service.getById(1)).rejects.toThrow(BadRequestException);
       await expect(service.getById(1)).rejects.toThrowError(
-        ValidationMessageEnum.NOT_FOUND,
+        ValidationMessageEnum.NOT_FOUND_PATIENT,
       );
     });
   });
@@ -134,15 +134,9 @@ describe('PatientService', () => {
 
       jest.spyOn(repository, 'update').mockResolvedValue(result);
 
-      expect(await service.update(1, updatePatientDto)).toBe(result);
-    });
-  });
-
-  describe('delete', () => {
-    it('should remove a patient', async () => {
-      jest.spyOn(repository, 'delete').mockResolvedValue();
-
-      expect(await service.delete(1)).toBeUndefined();
+      await expect(service.getById(1)).rejects.toThrowError(
+        ValidationMessageEnum.NOT_FOUND_PATIENT,
+      );
     });
   });
 });

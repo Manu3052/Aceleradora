@@ -1,3 +1,5 @@
+import { ApiProperty } from "@nestjs/swagger";
+
 /**
  * Data Transfer Object (DTO) for listing consultations.
  */
@@ -7,21 +9,25 @@ export class ListConsultationDto {
   /**
    * The ID of the consultation.
    */
+  @ApiProperty()
   private _id: number;
 
   /**
    * The date of the consultation.
    */
+  @ApiProperty()
   private _date: string;
 
   /**
    * The hour of the consultation.
    */
+  @ApiProperty()
   private _hour: string;
 
   /**
    * The ID of the patient.
    */
+  @ApiProperty()
   private _patientId: number;
 
   /**

@@ -11,10 +11,10 @@ export class PatientService implements AbstractPatientService {
   constructor(private patientRepository: PatientRepository) {}
 
   /**
-   * Formats the given ID to a number.
+   * Converts the given ID to a number.
    *
-   * @param {number} id - The ID to be formatted.
-   * @returns {number} The formatted ID as a number.
+   * @param {number} id - The ID to be converted.
+   * @returns {number} The converted ID as a number.
    */
   formatId(id: number): number {
     const format = Number(id);
@@ -22,11 +22,11 @@ export class PatientService implements AbstractPatientService {
   }
 
   /**
-   * Creates a new patient.
+   * Creates a new patient in the repository.
    *
-   * @param {CreatePatientDto} createPatientDto - Data Transfer Object containing the details of the patient to be created.
-   * @returns {Promise<ListPatientDto>} A promise that resolves to the created patient.
-   * @throws {BadRequestException} Throws an exception if the telephone number already exists.
+   * @param {CreatePatientDto} createPatientDto - The data of the patient to be created.
+   * @returns {Promise<ListPatientDto>} A promise that resolves to the created patient data.
+   * @throws {BadRequestException} If a patient with the same telephone number already exists.
    */
   async create(createPatientDto: CreatePatientDto): Promise<ListPatientDto> {
     const existingPatient = await this.patientRepository.getByTelephone(
@@ -38,15 +38,16 @@ export class PatientService implements AbstractPatientService {
       );
     }
 
-    const patientCreated = await this.patientRepository.create(createPatientDto);
+    const patientCreated =
+      await this.patientRepository.create(createPatientDto);
     return patientCreated;
   }
 
   /**
-   * Retrieves all patients.
+   * Retrieves all patients from the repository.
    *
    * @returns {Promise<ListPatientDto[]>} A promise that resolves to a list of patients.
-   * @throws {BadRequestException} Throws an exception if no patients are found.
+   * @throws {BadRequestException} If no patients are found.
    */
   async getAll(): Promise<ListPatientDto[]> {
     const patients = await this.patientRepository.getAll();
@@ -57,27 +58,27 @@ export class PatientService implements AbstractPatientService {
   }
 
   /**
-   * Retrieves a patient by ID.
+   * Retrieves a patient by their ID from the repository.
    *
    * @param {number} id - The ID of the patient to retrieve.
-   * @returns {Promise<ListPatientDto>} A promise that resolves to the patient with the given ID.
-   * @throws {BadRequestException} Throws an exception if the patient is not found.
+   * @returns {Promise<ListPatientDto>} A promise that resolves to the patient data.
+   * @throws {BadRequestException} If the patient with the specified ID is not found.
    */
   async getById(id: number): Promise<ListPatientDto> {
     const idPatient = this.formatId(id);
     const patient = await this.patientRepository.getById(idPatient);
     if (!patient) {
-      throw new BadRequestException(ValidationMessageEnum.NOT_FOUND);
+      throw new BadRequestException(ValidationMessageEnum.NOT_FOUND_PATIENT);
     }
     return patient;
   }
 
   /**
-   * Updates an existing patient.
+   * Updates the details of an existing patient in the repository.
    *
    * @param {number} id - The ID of the patient to update.
-   * @param {UpdatePatientDto} updatePatientDto - Data Transfer Object containing the updated details of the patient.
-   * @returns {Promise<ListPatientDto>} A promise that resolves to the updated patient.
+   * @param {UpdatePatientDto} updatePatientDto - The new details of the patient.
+   * @returns {Promise<ListPatientDto>} A promise that resolves to the updated patient data.
    */
   async update(
     id: number,
@@ -92,11 +93,11 @@ export class PatientService implements AbstractPatientService {
   }
 
   /**
-   * Deletes a patient by ID.
+   * Deletes a patient by their ID from the repository.
    *
    * @param {number} id - The ID of the patient to delete.
    * @returns {Promise<void>} A promise that resolves when the patient is deleted.
-   * @throws {BadRequestException} Throws an exception if the patient is not found.
+   * @throws {BadRequestException} If the patient with the specified ID is not found.
    */
   async delete(id: number): Promise<void> {
     const idPatient = this.formatId(id);

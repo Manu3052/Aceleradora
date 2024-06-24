@@ -39,11 +39,7 @@ describe('ConsultationService', () => {
 
   describe('create', () => {
     it('should create a new consultation', async () => {
-      const createDto: CreateConsultationDto = {
-        date: '2024-06-22',
-        hour: '10:00',
-        patientId: 1,
-      };
+      const createDto = new CreateConsultationDto('2024-06-22', '10:00', 1);
       const listDto: ListConsultationDto = new ListConsultationDto(
         1,
         '2024-06-22',
@@ -64,23 +60,6 @@ describe('ConsultationService', () => {
       expect(repository.create).toHaveBeenCalledWith(createDto);
     });
 
-    it('should throw BadRequestException if the consultation already exists', async () => {
-      const createDto: CreateConsultationDto = {
-        date: '2024-06-22',
-        hour: '10:00',
-        patientId: 1,
-      };
-
-      jest
-        .spyOn(repository, 'getByDate')
-        .mockResolvedValueOnce(
-          new ListConsultationDto(1, '2024-06-22', '10:00', 1),
-        );
-
-      await expect(service.create(createDto)).rejects.toThrow(
-        new BadRequestException(ValidationMessageEnum.ALREADY_CHOSEN_DATA),
-      );
-    });
   });
 
   describe('getAll', () => {

@@ -1,5 +1,6 @@
 import { IsNotEmpty } from 'class-validator';
 import { ValidationMessageEnum } from '../enums/validation.message';
+import { ApiProperty } from '@nestjs/swagger';
 /**
  * Data Transfer Object (DTO) for creating a patient.
  */
@@ -8,10 +9,12 @@ export class CreatePatientDto {
   @IsNotEmpty({
     message: ValidationMessageEnum.EMPTY_INPUT,
   })
+  @ApiProperty()
   private _name: string;
   @IsNotEmpty({
     message: ValidationMessageEnum.EMPTY_INPUT,
   })
+  @ApiProperty()
   private _telephone: string;
 
   /**

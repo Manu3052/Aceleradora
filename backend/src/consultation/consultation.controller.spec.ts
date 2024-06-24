@@ -37,11 +37,7 @@ describe('ConsultationController', () => {
 
   describe('create', () => {
     it('should create a new consultation', async () => {
-      const createDto: CreateConsultationDto = {
-        date: '2024-06-22',
-        hour: '10:00',
-        patientId: 1,
-      };
+      const createDto = new CreateConsultationDto('2024-06-22', '10:00', 1);
       const listDto: ListConsultationDto = new ListConsultationDto(
         1,
         '2024-06-22',

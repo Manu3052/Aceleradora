@@ -1,10 +1,15 @@
+import { ApiProperty } from "@nestjs/swagger";
+
 /**
  * Data Transfer Object (DTO) for updating a patient.
  */
 export class UpdatePatientDto {
   // Private properties representing the patient attributes
+  @ApiProperty()
   private _id: number;
+  @ApiProperty()
   private _name: string;
+  @ApiProperty()
   private _telephone: string;
 
   /**

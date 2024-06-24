@@ -1,3 +1,5 @@
+import { ApiProperty } from "@nestjs/swagger";
+
 /**
  * Data Transfer Object (DTO) for updating a consultation.
  */
@@ -7,16 +9,19 @@ export class UpdateConsultationDto {
   /**
    * The date of the consultation.
    */
+  @ApiProperty()
   private _date?: string;
 
   /**
    * The hour of the consultation.
    */
+  @ApiProperty()
   private _hour?: string;
 
   /**
    * The ID of the patient.
    */
+  @ApiProperty()
   private _patientId?: number;
 
   /**
