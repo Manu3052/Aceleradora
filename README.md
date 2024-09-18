@@ -47,4 +47,4 @@ Possuindo a documentação feita através de docstrings estilo google-style a ap
 
 ## Como testar a api?
 
-Por não possuir um cliente ou interface, o teste da api pode ser feito através do próprio Schema
+Por não possuir um cliente ou interface, o teste da api pode ser feito através do próprio Swagger
